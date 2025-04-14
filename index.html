@@ -2,78 +2,107 @@
 <html lang="cs">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Zvládnu to – Přihlášení</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      text-align: center;
+      font-family: sans-serif;
+      background-color: #eff8f9;
       padding: 20px;
-      background: #f3f9fa;
+      text-align: center;
     }
-    input {
+    input, button {
       display: block;
       margin: 10px auto;
       padding: 10px;
       width: 80%;
       max-width: 300px;
     }
-    button {
-      padding: 10px 20px;
-      background: #007bff;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-    .form-container {
+    #registerForm {
       display: none;
     }
-    .form-container.active {
-      display: block;
-    }
     a {
-      color: #007bff;
       cursor: pointer;
+      color: blue;
     }
   </style>
 </head>
 <body>
+
   <h1>Zvládnu to</h1>
   <p>Chytrý pomocník pro zvládání finanční nejistoty a stresu.</p>
 
   <!-- Přihlašovací formulář -->
   <form id="loginForm">
-    <input type="email" id="loginEmail" placeholder="E-mail" required>
-    <input type="password" id="loginPassword" placeholder="Heslo" required>
+    <input type="email" id="loginEmail" placeholder="E-mail" required />
+    <input type="password" id="loginPassword" placeholder="Heslo" required />
     <button type="submit">Přihlásit se</button>
-    <p>Nemáš účet? <a href="#" id="showRegister">Zaregistruj se</a></p>
   </form>
 
-  <!-- Registrační formulář (skrytý) -->
-  <form id="registerForm" style="display:none;">
-    <input type="email" id="registerEmail" placeholder="Email" required>
-    <input type="password" id="registerPassword" placeholder="Heslo" required>
+  <p>Nemáš účet? <a id="toggleRegister">Zaregistruj se</a></p>
+
+  <!-- Registrační formulář -->
+  <form id="registerForm">
+    <input type="email" id="registerEmail" placeholder="E-mail" required />
+    <input type="password" id="registerPassword" placeholder="Heslo" required />
     <button type="submit">Registrovat</button>
-    <p>Už máš účet? <a href="#" id="showLogin">Přihlas se</a></p>
   </form>
 
-  <!-- JavaScript -->
-  <script>
-    const loginForm = document.getElementById('loginForm');
-    const registerForm = document.getElementById('registerForm');
-    const showRegister = document.getElementById('showRegister');
-    const showLogin = document.getElementById('showLogin');
+  <!-- Firebase + vlastní JS -->
+  <script type="module">
+    // Import Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
 
-    showRegister.addEventListener('click', function(e) {
+    // Firebase konfigurace
+    const firebaseConfig = {
+      apiKey: "AIzaSyAcg0qqzWJwkxmopkTgzfasMqd3siQN72Mc",
+      authDomain: "zvladnuto-4e6cb.firebaseapp.com",
+      projectId: "zvladnuto-4e6cb",
+      storageBucket: "zvladnuto-4e6cb.appspot.com",
+      messagingSenderId: "299881468872",
+      appId: "1:299881468872:web:8c36e215cf40a9174884ec",
+      measurementId: "G-HZZG7JRYCC"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Přihlášení
+    const loginForm = document.getElementById("loginForm");
+    loginForm.addEventListener("submit", (e) => {
       e.preventDefault();
-      loginForm.style.display = 'none';
-      registerForm.style.display = 'block';
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          alert("Přihlášení úspěšné!");
+        })
+        .catch((error) => {
+          alert("Chyba při přihlášení: " + error.message);
+        });
     });
 
-    showLogin.addEventListener('click', function(e) {
+    // Registrace
+    const registerForm = document.getElementById("registerForm");
+    registerForm.addEventListener("submit", (e) => {
       e.preventDefault();
-      registerForm.style.display = 'none';
-      loginForm.style.display = 'block';
+      const email = document.getElementById("registerEmail").value;
+      const password = document.getElementById("registerPassword").value;
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          alert("Registrace byla úspěšná!");
+        })
+        .catch((error) => {
+          alert("Chyba při registraci: " + error.message);
+        });
+    });
+
+    // Přepínání formulářů
+    document.getElementById("toggleRegister").addEventListener("click", () => {
+      document.getElementById("registerForm").style.display = "block";
+      document.getElementById("loginForm").style.display = "none";
     });
   </script>
 </body>
+</html>
