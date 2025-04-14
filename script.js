@@ -1,17 +1,45 @@
+
+
+
 import { auth } from './firebase-config.js';
-document.getElementById('loginForm').addEventListener('submit', function(e) {
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+
+document.getElementById('loginForm').addEventListener('submit', (e) => {
   e.preventDefault();
-  alert('Přihlášení odesláno — funkce bude brzy doplněna.');
+  const email = document.getElementById('loginEmail').value;
+  const password = document.getElementById('loginPassword').value;
+
+  signInWithEmailAndPassword(auth, email, password)
+    .then(() => {
+      alert("Přihlášení úspěšné!");
+      // window.location.href = "/app.html"; // přesměrování pokud chceš
+    })
+    .catch((error) => {
+      alert("Chyba: " + error.message);
+    });
 });
 
-document.getElementById('registerForm').addEventListener('submit', function(e) {
+document.getElementById('registerForm').addEventListener('submit', (e) => {
   e.preventDefault();
-  alert('Registrace odeslána — funkce bude brzy doplněna.');
+  const email = document.getElementById('registerEmail').value;
+  const password = document.getElementById('registerPassword').value;
+
+  createUserWithEmailAndPassword(auth, email, password)
+    .then(() => {
+      alert("Registrace úspěšná!");
+      toggleForms();
+    })
+    .catch((error) => {
+      alert("Chyba: " + error.message);
+    });
 });
 
-function toggleForms() {
+window.toggleForms = function () {
   const login = document.getElementById('loginForm');
   const register = document.getElementById('registerForm');
-  login.style.display = login.style.display === 'none' ? 'block' : 'none';
-  register.style.display = register.style.display === 'none' ? 'block' : 'none';
-}
+  login.classList.toggle('active');
+  register.classList.toggle('active');
+};
