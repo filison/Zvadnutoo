@@ -41,21 +41,39 @@
   <h1>Zvládnu to</h1>
   <p>Chytrý pomocník pro zvládání finanční nejistoty a stresu.</p>
 
-  <!-- Přihlášení -->
-  <form id="loginForm" class="form-container active">
-    <input type="email" id="loginEmail" placeholder="E-mail" required />
-    <input type="password" id="loginPassword" placeholder="Heslo" required />
+  <!-- Přihlašovací formulář -->
+  <form id="loginForm">
+    <input type="email" id="loginEmail" placeholder="E-mail" required>
+    <input type="password" id="loginPassword" placeholder="Heslo" required>
     <button type="submit">Přihlásit se</button>
-    <p>Nemáš účet? <a onclick="toggleForms()">Zaregistruj se</a></p>
+    <p>Nemáš účet? <a href="#" id="showRegister">Zaregistruj se</a></p>
   </form>
 
-  <!-- Registrace -->
-  <form id="registerForm">
-  <input type="email" id="registerEmail" placeholder="Email" required>
-  <input type="password" id="registerPassword" placeholder="Heslo" required>
-  <button type="submit">Registrovat</button>
-</form>
+  <!-- Registrační formulář (skrytý) -->
+  <form id="registerForm" style="display:none;">
+    <input type="email" id="registerEmail" placeholder="Email" required>
+    <input type="password" id="registerPassword" placeholder="Heslo" required>
+    <button type="submit">Registrovat</button>
+    <p>Už máš účet? <a href="#" id="showLogin">Přihlas se</a></p>
+  </form>
 
-  <script type="module" src="./script.js"></script>
+  <!-- JavaScript -->
+  <script>
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const showRegister = document.getElementById('showRegister');
+    const showLogin = document.getElementById('showLogin');
+
+    showRegister.addEventListener('click', function(e) {
+      e.preventDefault();
+      loginForm.style.display = 'none';
+      registerForm.style.display = 'block';
+    });
+
+    showLogin.addEventListener('click', function(e) {
+      e.preventDefault();
+      registerForm.style.display = 'none';
+      loginForm.style.display = 'block';
+    });
+  </script>
 </body>
-</html>
