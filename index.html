@@ -1,108 +1,161 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zvládnu to – Přihlášení</title>
+  <meta charset="UTF-8">
+  <title>Zvládnu to – Přihlášení a Registrace</title>
   <style>
     body {
-      font-family: sans-serif;
-      background-color: #eff8f9;
-      padding: 20px;
+      background-color: #f4f7fa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
       text-align: center;
     }
-    input, button {
-      display: block;
-      margin: 10px auto;
-      padding: 10px;
-      width: 80%;
-      max-width: 300px;
+
+    h2 {
+      color: #2c3e50;
+      margin-bottom: 20px;
     }
-    #registerForm {
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #43a047;
+    }
+
+    .toggle-link {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #3498db;
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    .message {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #e74c3c;
+    }
+
+    .hidden {
       display: none;
     }
-    a {
-      cursor: pointer;
-      color: blue;
-    }
   </style>
-</head>
-<body>
 
-  <h1>Zvládnu to</h1>
-  <p>Chytrý pomocník pro zvládání finanční nejistoty a stresu.</p>
-
-  <!-- Přihlašovací formulář -->
-  <form id="loginForm">
-    <input type="email" id="loginEmail" placeholder="E-mail" required />
-    <input type="password" id="loginPassword" placeholder="Heslo" required />
-    <button type="submit">Přihlásit se</button>
-  </form>
-
-  <p>Nemáš účet? <a id="toggleRegister">Zaregistruj se</a></p>
-
-  <!-- Registrační formulář -->
-  <form id="registerForm">
-    <input type="email" id="registerEmail" placeholder="E-mail" required />
-    <input type="password" id="registerPassword" placeholder="Heslo" required />
-    <button type="submit">Registrovat</button>
-  </form>
-
-  <!-- Firebase + vlastní JS -->
   <script type="module">
-    // Import Firebase
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-    // Firebase konfigurace
     const firebaseConfig = {
-      apiKey: "AIzaSyAcg0qqzWJwkxmopkTgzfasMqd3siQN72Mc",
+      apiKey: "AIzaSyAcg0qqzWJwkxmopkTgzfasMqd3siQNxIU",
       authDomain: "zvladnuto-4e6cb.firebaseapp.com",
       projectId: "zvladnuto-4e6cb",
       storageBucket: "zvladnuto-4e6cb.appspot.com",
       messagingSenderId: "299881468872",
-      appId: "1:299881468872:web:8c36e215cf40a9174884ec",
-      measurementId: "G-HZZG7JRYCC"
+      appId: "1:299881468872:web:8c36e215cf40a91748e6fd"
     };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    // Přihlášení
-    const loginForm = document.getElementById("loginForm");
-    loginForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const email = document.getElementById("loginEmail").value;
-      const password = document.getElementById("loginPassword").value;
-      signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          alert("Přihlášení úspěšné!");
-        })
-        .catch((error) => {
-          alert("Chyba při přihlášení: " + error.message);
-        });
-    });
+    window.toggleForm = function(type) {
+      const loginForm = document.getElementById("login-form");
+      const registerForm = document.getElementById("register-form");
+      const message = document.getElementById("message");
 
-    // Registrace
-    const registerForm = document.getElementById("registerForm");
-    registerForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const email = document.getElementById("registerEmail").value;
-      const password = document.getElementById("registerPassword").value;
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          alert("Registrace byla úspěšná!");
-        })
-        .catch((error) => {
-          alert("Chyba při registraci: " + error.message);
-        });
-    });
+      message.textContent = "";
+      if (type === 'login') {
+        loginForm.classList.remove("hidden");
+        registerForm.classList.add("hidden");
+      } else {
+        registerForm.classList.remove("hidden");
+        loginForm.classList.add("hidden");
+      }
+    };
 
-    // Přepínání formulářů
-    document.getElementById("toggleRegister").addEventListener("click", () => {
-      document.getElementById("registerForm").style.display = "block";
-      document.getElementById("loginForm").style.display = "none";
-    });
+    window.register = async () => {
+      const email = document.getElementById("register-email").value;
+      const password = document.getElementById("register-password").value;
+      const messageEl = document.getElementById("message");
+
+      try {
+        await createUserWithEmailAndPassword(auth, email, password);
+        messageEl.style.color = "green";
+        messageEl.textContent = "Registrace proběhla úspěšně!";
+      } catch (error) {
+        messageEl.style.color = "red";
+        messageEl.textContent = "Chyba: " + error.message;
+      }
+    };
+
+    window.login = async () => {
+      const email = document.getElementById("login-email").value;
+      const password = document.getElementById("login-password").value;
+      const messageEl = document.getElementById("message");
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        messageEl.style.color = "green";
+        messageEl.textContent = "Přihlášení proběhlo úspěšně!";
+      } catch (error) {
+        messageEl.style.color = "red";
+        messageEl.textContent = "Chyba: " + error.message;
+      }
+    };
   </script>
+</head>
+<body>
+  <div class="container">
+    <h2 id="form-title">Zvládnu to – Přihlášení</h2>
+
+    <!-- Přihlášení -->
+    <div id="login-form">
+      <input type="email" id="login-email" placeholder="Email" required>
+      <input type="password" id="login-password" placeholder="Heslo" required>
+      <button onclick="login()">Přihlásit se</button>
+      <div class="toggle-link" onclick="toggleForm('register')">Nemáš účet? Zaregistruj se</div>
+    </div>
+
+    <!-- Registrace -->
+    <div id="register-form" class="hidden">
+      <input type="email" id="register-email" placeholder="Email" required>
+      <input type="password" id="register-password" placeholder="Heslo" required>
+      <button onclick="register()">Registrovat se</button>
+      <div class="toggle-link" onclick="toggleForm('login')">Už máš účet? Přihlas se</div>
+    </div>
+
+    <div class="message" id="message"></div>
+  </div>
 </body>
 </html>
