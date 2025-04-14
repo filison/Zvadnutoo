@@ -1,3 +1,4 @@
+import { auth } from './firebase-config.js';
 document.getElementById('loginForm').addEventListener('submit', function(e) {
   e.preventDefault();
   alert('Přihlášení odesláno — funkce bude brzy doplněna.');
