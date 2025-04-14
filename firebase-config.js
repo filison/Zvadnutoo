@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAcg0qqzWJwkxmopkTgzfasMqd3siQNxIU",
@@ -11,4 +11,17 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+const auth = getAuth(app);
+
+// volání registrace
+function register(email, password) {
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      console.log("Registrován:", userCredential.user);
+      alert("Úspěšná registrace!");
+    })
+    .catch((error) => {
+      console.error("Chyba při registraci:", error);
+      alert("Chyba: " + error.message);
+    });
+}
