@@ -1,18 +1,15 @@
-import { auth } from './firebase-config.js';
-import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+import { auth } from './firebase.js';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 
-document.getElementById('registerForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-
-  const email = document.getElementById('registerEmail').value;
-  const password = document.getElementById('registerPassword').value;
+document.getElementById("register-button").addEventListener("click", () => {
+  const email = document.getElementById("register-email").value;
+  const password = document.getElementById("register-password").value;
 
   createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      alert('Registrace proběhla úspěšně!');
-      console.log(userCredential.user);
+      alert("Úspěšně zaregistrováno!");
     })
     .catch((error) => {
-      alert('Chyba při registraci: ' + error.message);
+      alert("Chyba při registraci: " + error.message);
     });
 });
