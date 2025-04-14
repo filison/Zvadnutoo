@@ -2,33 +2,61 @@
 <html lang="cs">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zvládnu to</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Zvládnu to – Přihlášení</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+      background: #f3f9fa;
+    }
+    input {
+      display: block;
+      margin: 10px auto;
+      padding: 10px;
+      width: 80%;
+      max-width: 300px;
+    }
+    button {
+      padding: 10px 20px;
+      background: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .form-container {
+      display: none;
+    }
+    .form-container.active {
+      display: block;
+    }
+    a {
+      color: #007bff;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Zvládnu to</h1>
-    <p class="subtitle">Chytrý pomocník pro zvládání finanční nejistoty a stresu.</p>
+  <h1>Zvládnu to</h1>
+  <p>Chytrý pomocník pro zvládání finanční nejistoty a stresu.</p>
 
-    <div class="form-wrapper">
-      <form id="loginForm">
-        <input type="email" placeholder="E-mail" required />
-        <input type="password" placeholder="Heslo" required />
-        <button type="submit">Přihlásit se</button>
-        <p>Nemáš účet? <a href="#" onclick="toggleForms()">Zaregistruj se</a></p>
-      </form>
+  <!-- Přihlášení -->
+  <form id="loginForm" class="form-container active">
+    <input type="email" id="loginEmail" placeholder="E-mail" required />
+    <input type="password" id="loginPassword" placeholder="Heslo" required />
+    <button type="submit">Přihlásit se</button>
+    <p>Nemáš účet? <a onclick="toggleForms()">Zaregistruj se</a></p>
+  </form>
 
-      <form id="registerForm" style="display: none;">
-        <input type="text" placeholder="Jméno" required />
-        <input type="email" placeholder="E-mail" required />
-        <input type="password" placeholder="Heslo" required />
-        <button type="submit">Zaregistrovat se</button>
-        <p>Máš už účet? <a href="#" onclick="toggleForms()">Přihlásit se</a></p>
-      </form>
-    </div>
-  </div>
+  <!-- Registrace -->
+  <form id="registerForm" class="form-container">
+    <input type="email" id="registerEmail" placeholder="E-mail" required />
+    <input type="password" id="registerPassword" placeholder="Heslo" required />
+    <button type="submit">Zaregistrovat se</button>
+    <p>Už máš účet? <a onclick="toggleForms()">Přihlas se</a></p>
+  </form>
 
-  <script src="script.js"></script>
+  <script type="module" src="./script.js"></script>
 </body>
 </html>
